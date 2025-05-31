@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <title>JUNO_OKYO</title>
+    <style>
+      .info {
+        background-color: #e0f7fa;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .warning {
+        background-color: #fff3e0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .code-block {
+        background-color: #f5f5f5;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        overflow-x: auto;
+        font-family: monospace;
+      }
+      .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .old-way, .new-way {
+        padding: 1rem;
+        border-radius: 0.5rem;
+      }
+      .old-way {
+        background-color: #ffebee;
+      }
+      .new-way {
+        background-color: #e8f5e9;
+      }
+      @media (max-width: 768px) {
+        .comparison {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        .info {
+          background-color: #0d47a1;
+          color: white;
+        }
+        .warning {
+          background-color: #e65100;
+          color: white;
+        }
+        .code-block {
+          background-color: #263238;
+          color: #e0e0e0;
+        }
+        .old-way {
+          background-color: #4a2222;
+          color: white;
+        }
+        .new-way {
+          background-color: #1b3a1b;
+          color: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Demo: cookieStore API</h1>
+
+      <div class="info">
+        <h2>Về cookieStore API</h2>
+        <p>cookieStore API là một API mới cung cấp cách thức làm việc với cookie một cách bất đồng bộ (async/await).</p>
+        <p>API này giúp việc quản lý cookie trở nên dễ dàng hơn so với cách truyền thống sử dụng document.cookie.</p>
+      </div>
+
+      <h2>So sánh cách làm việc với cookie</h2>
+
+      <div class="comparison">
+        <div class="old-way">
+          <h3>Cách cũ: document.cookie</h3>
+          <div class="code-block">
+            <p>// Đặt cookie</p>
+            <p>document.cookie = "username=JUNO_OKYO; expires=Thu, 18 Dec 2025 12:00:00 UTC; path=/";</p>
+            <br>
+            <p>// Lấy cookie</p>
+            <p>function getCookie(name) {</p>
+            <p>&nbsp;&nbsp;const nameEQ = name + "=";</p>
+            <p>&nbsp;&nbsp;const ca = document.cookie.split(';');</p>
+            <p>&nbsp;&nbsp;for (let i = 0; i < ca.length; i++) {</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;let c = ca[i].trim();</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);</p>
+            <p>&nbsp;&nbsp;}</p>
+            <p>&nbsp;&nbsp;return null;</p>
+            <p>}</p>
+            <p>const username = getCookie('username');</p>
+            <br>
+            <p>// Xóa cookie</p>
+            <p>document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";</p>
+          </div>
+        </div>
+
+        <div class="new-way">
+          <h3>Cách mới: cookieStore API</h3>
+          <div class="code-block">
+            <p>// Đặt cookie</p>
+            <p>await cookieStore.set('username', 'JUNO_OKYO');</p>
+            <p>// hoặc với tùy chọn</p>
+            <p>await cookieStore.set({</p>
+            <p>&nbsp;&nbsp;name: 'username',</p>
+            <p>&nbsp;&nbsp;value: 'JUNO_OKYO',</p>
+            <p>&nbsp;&nbsp;expires: Date.now() + 86400000,</p>
+            <p>&nbsp;&nbsp;path: '/'</p>
+            <p>});</p>
+            <br>
+            <p>// Lấy cookie</p>
+            <p>const cookie = await cookieStore.get('username');</p>
+            <br>
+            <p>// Xóa cookie</p>
+            <p>await cookieStore.delete('username');</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="warning">
+        <h2>Tương thích trình duyệt</h2>
+        <p>cookieStore API chỉ được hỗ trợ trên các trình duyệt hiện đại. Mở console để xem kết quả demo.</p>
+        <p>Nếu trình duyệt của bạn không hỗ trợ, bạn sẽ thấy thông báo trong console.</p>
+      </div>
+
+      <h2>Các tính năng chính</h2>
+      <ul>
+        <li>Đặt cookie với cookieStore.set()</li>
+        <li>Lấy cookie với cookieStore.get()</li>
+        <li>Lấy tất cả cookie với cookieStore.getAll()</li>
+        <li>Xóa cookie với cookieStore.delete()</li>
+        <li>Lắng nghe sự kiện thay đổi cookie</li>
+      </ul>
+
+      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/CookieStore" target="_blank">Tài liệu tham khảo trên MDN</a></p>
+    </main>
+
+    <script src="main.js"></script>
+  </body>
+</html>
